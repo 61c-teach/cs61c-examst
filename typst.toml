@@ -1,0 +1,16 @@
+[package]
+name = "61c-examst"
+version = "0.1.0"
+compiler = "0.12.0"
+entrypoint = "lib.typ"
+repository = "https://github.com/61c-teach/templates"
+authors = ["Andrew Liu <liu.andrew@berkeley.edu>"]
+license = "MIT-0"
+description = "A rewrite of the exam template used by CS61C at UC Berkeley in Typst."
+keywords = ["exam"]
+categories = ["layout"]
+
+[template]
+path = "example"
+entrypoint = "main.typ"
+thumbnail = "coverpage.png"

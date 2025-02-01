@@ -1,0 +1,102 @@
+#import "../states.typ": *
+#import "part.typ": qnum
+
+#let custom-blank(it) = context {
+  let len-re = regex("(\{\d+\})")
+  let undertext = it.text.trim(len-re).slice(2, -2).trim("\s")
+  let txt = it.text
+
+  let width = 10em
+  let inset = 3pt
+  let outset = 1pt
+
+  if txt.contains(len-re) {
+    width = int(txt.find(len-re).find(regex("\d+"))) * measure(` `).width
+  }
+  box(
+    stroke: (bottom: 1pt + black),
+    inset: (bottom: inset),
+    height: 0.5em,
+    width: width,
+    outset: (bottom: outset),
+    [
+      #place(bottom + center, dy: 11pt, text(size: 8pt, undertext))
+    ],
+  )
+}
+
+#let code-blank(it) = context {
+  let disp = print-answers.get()
+  let len-re = regex("(\{\d+\})")
+  let sol = it.text.trim(len-re).slice(2, -2).trim("\s")
+  let txt = it.text
+
+
+  let width = if disp {
+    calc.max(measure(sol).width, measure(qnum()).width)
+  } else { 10em }
+  let inset = if disp { 0pt } else { 3pt }
+  let outset = if disp { 2pt } else { 0pt }
+
+  part-num.step()
+
+  if txt.contains(len-re) and not print-answers.get() {
+    width = int(txt.find(len-re).find(regex("\d+"))) * measure(` `).width
+  }
+  box(
+    stroke: (bottom: 1pt + black),
+    inset: (bottom: inset),
+    height: 1em,
+    width: width,
+    outset: (bottom: outset),
+    [
+      #if print-answers.get() {
+        align(center + bottom, sol)
+      }
+      #place(bottom + center, dy: 11pt, text(size: 8pt, qnum()))
+    ],
+  )
+}
+
+#let code-block(it, ans-space: 0.5em) = {
+  set text(top-edge: 0pt)
+  set align(horizon)
+
+  let line-no = counter("line-no")
+  line-no.update(0)
+  line-no.step()
+
+  let re = regex("<\|.*?\|>(\{\d+\})?")
+  let custom-re = regex("@\|.*?\|@(\{\d+\})?")
+
+  block(
+    height: auto,
+    width: 100%,
+    breakable: false,
+    stroke: 0.5pt,
+    inset: (left: -1.4em, top: 0.6em),
+  )[
+    #table(
+      stroke: 0pt,
+      columns: (1.4em, 1fr), row-gutter: 4pt,
+      align: (right + bottom, left),
+      ..for line in it.text.split("\n") {
+        let lower-pad = if line.contains(re) { ans-space } else { 0em }
+        (
+          context [
+            #line-no.get().at(0)
+            #v(lower-pad)
+          ],
+          [
+            #show re: it => code-blank(it)
+            #show custom-re: it => custom-blank(it)
+            #line-no.step()
+
+            #line
+            #v(lower-pad)
+          ],
+        )
+      }
+    )
+  ]
+}
