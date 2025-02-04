@@ -33,14 +33,70 @@
     This package is used to typeset exams for the course CS61C at UC Berkeley. It is inspired by our previous exam template written in LaTeX, and contains both a template for exams, as well as various utility functions for creating exams.
   ],
 
-  theme: themes.modern,
-  examples-scope: (dictionary(61c-examst)),
+  // theme: themes.modern,
 )
+
+= Quickstart
+You can quickstart using the template with `typst init`:
+
+#codesnippet[```bash
+  typst init "@preview/cs61c-examst" exam
+  ```]
+
+This will create the following project structure:
+
+#codesnippet(inset: 1.5pt)[```
+  exam
+  ├── questions
+  │   └── 01-sample.typ
+  └── main.typ
+  ```]
+
+While you are able to write the entire exam in `main.typ`, I recommend that you write each question in its own file in the `questions` directory, and then import each question separately in `main.typ`.
+
+Fill in each of the arguments in the
 
 = Usage
 
 To start, import the package as follows:
 
-```typ
-import @preview/61c-examst:0.1.0: *
-```
+#codesnippet[```typst
+  #import "@preview/cs61c-examst:0.1.0": *
+  ```]
+
+== Template
+
+The template for the exam is initialized by applying a show rule with the `exam` command:
+
+#command(
+  "exam",
+
+  arg(class: "CS61C", types: ("content", "string")),
+  arg(instructors: ("CodaBot", "EvanBot")),
+  arg(exam: "Midterm"),
+  arg(time: "110 minutes"),
+  arg(print-answers: false),
+  arg(coverpage: none),
+  arg(header: none),
+  arg(footer: none),
+  arg("last-edited"),
+  barg("body")
+)[
+  #argument("class", types: ("content", "string"))[
+    The title of the class. This will be displayed on the cover page, as well as in the default footer.
+  ]
+
+  #argument("instructors", types: ("content", "string"))[
+    The title of the class. This will be displayed on the cover page, as well as in the default footer.
+  ]
+]
+
+= Utility Functions
+== Answer Boxes
+== Code Blocks
+== Multiple Choice Questions
+== Parts
+== Solutions
+== Specifications
+== Titled Questions
+== Other Functions

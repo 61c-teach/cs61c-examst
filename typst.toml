@@ -1,14 +1,15 @@
 [package]
-name = "61c-examst"
+name = "cs61c-examst"
 version = "0.1.0"
 compiler = "0.12.0"
-entrypoint = "lib.typ"
+entrypoint = "src/lib.typ"
 repository = "https://github.com/61c-teach/templates"
 authors = ["Andrew Liu <liu.andrew@berkeley.edu>"]
 license = "MIT-0"
 description = "A rewrite of the exam template used by CS61C at UC Berkeley in Typst."
 keywords = ["exam"]
-categories = ["layout"]
+categories = ["layout", "model", "utility"]
+exclude = ["**/*.pdf"]
 
 [template]
 path = "example"

@@ -1,4 +1,4 @@
-#import "/lib.typ": *
+#import "@preview/cs61c-examst:0.1.0": *
 
 #show: exam.with(
   semester: "Fall 2024",
