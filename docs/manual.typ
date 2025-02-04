@@ -71,16 +71,16 @@ The template for the exam is initialized by applying a show rule with the `exam`
 #command(
   "exam",
 
-  arg(class: "CS61C", types: ("content", "string")),
-  arg(instructors: ("CodaBot", "EvanBot")),
-  arg(exam: "Midterm"),
-  arg(time: "110 minutes"),
-  arg(print-answers: false),
-  arg(coverpage: none),
-  arg(header: none),
-  arg(footer: none),
+  arg("class"),
+  arg("instructors"),
+  arg("exam"),
+  arg("time"),
+  arg("print-answers"),
+  arg("coverpage"),
+  arg("header"),
+  arg("footer"),
   arg("last-edited"),
-  barg("body")
+  barg("body"),
 )[
   #argument("class", types: ("content", "string"))[
     The title of the class. This will be displayed on the cover page, as well as in the default footer.
