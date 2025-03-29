@@ -15,7 +15,7 @@
     align: (left, right),
     row-gutter: 3pt,
     inset: 3pt,
-    [#class], [#if type(instructors) == "array" { instructors.join(", ") } else { instructors }],
+    [#class], [#if type(instructors) == array { instructors.join(", ") } else { instructors }],
     [#semester], [#exam],
   )
   #v(-18pt)

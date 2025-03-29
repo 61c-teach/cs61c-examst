@@ -108,11 +108,11 @@
   last-edited: datetime.today().display("[weekday], [month repr:long] [day padding:none], [year]"),
   body,
 ) = {
-  if type(header) == "function" {
+  if type(header) == function {
     header = header(class, semester, exam)
   }
 
-  if type(footer) == "function" {
+  if type(footer) == function {
     footer = footer(class, semester, exam)
   }
 
@@ -148,9 +148,9 @@
     states.print-answers.update(it => print-answers)
     frontpage(class, instructors, semester, exam, time, last-edited)
     states.print-answers.update(it => print-answers)
-  } else if type(coverpage) == "string" {
+  } else if type(coverpage) == string {
     include coverpage
-  } else if type(coverpage) == "function" {
+  } else if type(coverpage) == function {
     coverpage = coverpage(class, instructors, semester, exam, time, print-answers, header, footer, last-edited)
   }
 
