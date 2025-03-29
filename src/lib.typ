@@ -96,8 +96,8 @@
 }
 
 #let exam(
-  class: "CS61C",
-  instructors: ("CodaBot", "EvanBot"),
+  class: "CS101",
+  instructors: "Alan Turing",
   semester: "Fall 2024",
   exam: "Midterm",
   time: "110 minutes",
@@ -148,8 +148,10 @@
     states.print-answers.update(it => print-answers)
     frontpage(class, instructors, semester, exam, time, last-edited)
     states.print-answers.update(it => print-answers)
-  } else {
+  } else if type(coverpage) == "string" {
     include coverpage
+  } else if type(coverpage) == "function" {
+    coverpage = coverpage(class, instructors, semester, exam, time, print-answers, header, footer, last-edited)
   }
 
   [
