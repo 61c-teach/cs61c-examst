@@ -5,7 +5,7 @@
   instructors: "Alan Turing",
   exam: "Final",
   time: "170 minutes",
-  print-answers: false,
+  print-answers: true,
 )
 
 #blankpage()

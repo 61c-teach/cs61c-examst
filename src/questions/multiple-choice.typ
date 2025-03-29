@@ -62,16 +62,16 @@
 }
 
 
-#let multi-select(cols: 1, none-above: false, ..body) = {
-  let num-items = body.pos().len() + if none-above { 1 }
+#let multi-select(cols: 1, none-above: none, ..body) = {
+  let num-items = body.pos().len() + if type(none-above) != none { 1 }
   let items-per-col = num-items / cols
   let rem = calc.rem(num-items, cols)
   let col-counter = 0
   let last-break = 0
   columns(cols)[
     #for (i, b) in body.pos().enumerate() {
-      if type(b) == "dictionary" { choice(b.selection, b.body) }
-      if type(b) == "content" { choice(_choice, b) }
+      if type(b) == dictionary { choice(b.selection, b.body) }
+      if type(b) == content { choice(_choice, b) }
       if cols == 1 { continue }
       if (
         (
@@ -83,8 +83,24 @@
             and i + 1 != num-items
       ) [ #colbreak() ]
     }
-    #if none-above {
-      choice(circle.with(radius: 5pt), [None of the above])
+    #{
+      show square: it => circle(radius: it.width.length / 2, fill: it.fill, stroke: it.stroke)
+      if type(none-above) == bool {
+        if none-above {
+          choice(_choice, [None of the above])
+        }
+      } else if type(none-above) == type(auto) {
+        if body.pos()
+              .filter(it => type(it) == dictionary)
+              .filter(it => it.selection == _correct)
+              .len() == 0 {
+                choice(_correct, [None of the above])
+              } else {
+                choice(_choice, [None of the above])
+              }
+      } else if type(none-above) == function {
+        choice(none-above, [None of the above])
+      }
     }
   ]
 }

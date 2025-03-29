@@ -39,7 +39,7 @@
   #multi-select(
     cols: 1,
     rows: 4,
-    none-above: true,
+    none-above: auto,
     correct()[If one program crashes, the others keep going.],
     correct()[Programs communicate by sending messages between each other.],
     correct()[The manager-worker framework splits a problem into independent subtasks and tries to minimize communication between programs.],
