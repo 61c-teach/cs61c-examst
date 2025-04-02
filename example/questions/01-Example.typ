@@ -1,4 +1,5 @@
-#import "@preview/cs61c-examst:0.1.0": *
+// #import "@preview/cs61c-examst:0.1.0": *
+#import "../../src/lib.typ": *
 
 = Potpourri
 

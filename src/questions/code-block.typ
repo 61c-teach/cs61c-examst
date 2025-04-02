@@ -58,43 +58,40 @@
   )
 }
 
-#let code-block(it, ans-space: 0.5em) = {
+#let code-block(it, ans-space: 0.5em, disp-nums: false) = {
   set text(top-edge: 0pt)
-  set align(horizon)
-
-  let line-no = counter("line-no")
-  line-no.update(0)
-  line-no.step()
+  set align(top)
+    
+  let line_no = counter("line-no")
+  line_no.update(0)
+  line_no.step()
 
   let re = regex("<\|.*?\|>(\{\d+\})?")
   let custom-re = regex("@\|.*?\|@(\{\d+\})?")
-
+  
   block(
-    height: auto,
-    width: 100%,
-    breakable: false,
-    stroke: 0.5pt,
-    inset: (left: -1.4em, top: 0.6em),
+    height: auto, width: 100%, breakable: false,
+    stroke: 0.5pt, inset: (left: -1.4em, top: 0.6em)
   )[
     #table(
       stroke: 0pt,
       columns: (1.4em, 1fr), row-gutter: 4pt,
       align: (right + bottom, left),
       ..for line in it.text.split("\n") {
-        let lower-pad = if line.contains(re) { ans-space } else { 0em }
+        let lower_pad = if line.contains(re) { ans-space } else { 0em } 
         (
-          context [
-            #line-no.get().at(0)
-            #v(lower-pad)
-          ],
+          context [ 
+            #if disp-nums { line_no.get().at(0) }
+            #v(lower_pad)
+          ], 
           [
-            #show re: it => code-blank(it)
-            #show custom-re: it => custom-blank(it)
-            #line-no.step()
-
+            #show re: it => code_blank(it)
+            #show custom-re: it => custom_blank(it)
+            #line_no.step()
+            
             #line
-            #v(lower-pad)
-          ],
+            #v(lower_pad)
+          ]
         )
       }
     )

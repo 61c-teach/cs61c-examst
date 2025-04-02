@@ -106,6 +106,8 @@
   header: exam-header,
   footer: exam-footer,
   last-edited: datetime.today().display("[weekday], [month repr:long] [day padding:none], [year]"),
+  text-size: 11pt,
+  text-scale: 1,
   body,
 ) = {
   if type(header) == function {
@@ -123,15 +125,24 @@
     numbering: "1",
   )
 
-  set text(size: 11pt)
+  set text(size: text-size)
+  show text: set text(size: text-scale * 1em)
 
   set par(justify: true)
 
   show heading.where(level: 1): it => titled-question(title: it)
 
-  show raw: set text(font: "CMU Typewriter Text", size: 1.25em, weight: 700, top-edge: 5pt)
+  show raw: set text(font: "New Computer Modern Mono", size: 1.25em, weight: 700, top-edge: 5pt)
+  
+  show raw: it => {
+    show "~": set text(font: "Atkinson Hyperlegible Mono", weight: 500)
+    show "^": set text(font: "Atkinson Hyperlegible Mono", weight: 500)
+    it
+  }
 
-  show raw.where(block: true): it => code-block(it)
+  show raw.where(block: true, lang: "text"): it => code-block(it, disp-nums: false)
+  show raw.where(block: true, lang: "c"): it => code-block(it, disp-nums: true)
+  show raw.where(block: true, lang: "riscv"): it => code-block(it, disp-nums: true)
 
   show ref: it => {
     let el = it.element
