@@ -13,7 +13,7 @@
 
 #part(points: 3)[
   Consider the following multi-threaded code block.
-  ```c
+  ```py
   int32_t a = 0;
   int32_t b = 2;
 

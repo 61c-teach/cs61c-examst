@@ -58,7 +58,7 @@
   )
 }
 
-#let code-block(it, ans-space: 0.5em, disp-nums: false) = {
+#let code-block(it, ans-space: 0.5em, disp-nums: false, post-pad: 0em) = {
   set text(top-edge: 0pt)
   set align(top)
     
@@ -95,5 +95,6 @@
         )
       }
     )
+    #v(post-pad)
   ]
 }

@@ -142,6 +142,7 @@
 
   show raw.where(block: true, lang: "text"): it => code-block(it, disp-nums: false)
   show raw.where(block: true, lang: "c"): it => code-block(it, disp-nums: true)
+  show raw.where(block: true, lang: "py"): it => code-block(it, disp-nums: true, post-pad: 1em)
   show raw.where(block: true, lang: "riscv"): it => code-block(it, disp-nums: true)
 
   show ref: it => {
