@@ -85,8 +85,8 @@
             #v(lower_pad)
           ], 
           [
-            #show re: it => code_blank(it)
-            #show custom-re: it => custom_blank(it)
+            #show re: it => code-blank(it)
+            #show custom-re: it => custom-blank(it)
             #line_no.step()
             
             #line
@@ -95,6 +95,9 @@
         )
       }
     )
-    #v(post-pad)
+    #if (it.text.split("\n").at(-1).match(re) != none 
+    or   it.text.split("\n").at(-1).match(custom-re) != none) {
+      v(post-pad)
+    }
   ]
 }
