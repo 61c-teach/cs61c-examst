@@ -8,9 +8,17 @@
   }
 
   #square(size: 10pt, fill: fill, stroke: black)
+  #if states.show-answer-letters.get() {
+    states.answer-letters.step()
+    set text(size: 8pt)
+    place(center + horizon)[
+      #set text(size: 8pt, weight: 700)
+      #states.answer-letters.display("A")
+    ]
+  }
 ]
 
-#let _bad() = [
+#let _bad() = context [
   #let check-stroke = stroke(
     thickness: 2.3pt,
     paint: luma(50%),
@@ -32,10 +40,24 @@
   )
 
   #square(size: 10pt, stroke: black)
+  #if states.show-answer-letters.get() {
+    states.answer-letters.step()
+    place(center + horizon)[
+      #set text(size: 8pt, weight: 700)
+      #states.answer-letters.display("A")
+    ]
+  }
 ]
 
-#let _choice() = [
-  #square(size: 10pt, stroke: black)
+#let _choice() = context [
+  #square(size: 10pt, stroke: black)[]
+  #if states.show-answer-letters.get() {
+    states.answer-letters.step()
+    place(center + horizon)[
+      #set text(size: 8pt, weight: 700)
+      #states.answer-letters.display("A")
+    ]
+  }
 ]
 
 #let correct(body) = {
@@ -61,8 +83,7 @@
   )
 }
 
-
-#let multi-select(cols: 1, none-above: none, ..body) = {
+#let _multi-select-cols(cols, none-above, ..body) = {
   let num-items = body.pos().len() + if type(none-above) != none { 1 }
   let items-per-col = num-items / cols
   let rem = calc.rem(num-items, cols)
@@ -103,6 +124,56 @@
       }
     }
   ]
+}
+
+#let _multi-select-grid(cols, none-above, ..body) = {
+  let lst = for (i, b) in body.pos().enumerate() {
+    let result = none
+    if type(b) == dictionary { result = choice(b.selection, b.body) }
+    if type(b) == content { result = choice(_choice, b) }
+    (result,)
+  }
+  
+  states.answer-letters.update(1)
+  if none-above != none {
+    let num-items = body.pos().len()
+    let num-cols = if type(cols) == int {
+      cols
+    } else if type(cols) == array {
+      cols.len()
+    }
+    let none-above-span = num-cols - calc.rem(num-items, num-cols)
+
+    lst.push(grid.cell(
+      colspan: none-above-span,
+      {
+        show square: it => circle(radius: it.width.length / 2, fill: it.fill, stroke: it.stroke)
+        if type(none-above) == bool and none-above{
+          choice(_choice, [None of the above])
+        } else if type(none-above) == type(auto) {
+          if body.pos()
+                .filter(it => type(it) == dictionary)
+                .filter(it => it.selection == _correct)
+                .len() == 0 {
+                  choice(_correct, [None of the above])
+                } else {
+                  choice(_choice, [None of the above])
+                }
+        } else if type(none-above) == function {
+          choice(none-above, [None of the above])
+        }
+      }
+    ))
+  }
+  
+  grid(
+    columns: cols, column-gutter: 1em, row-gutter: 1em,
+    ..lst.slice(0, -1), ..lst.slice(-1)
+  )
+}
+
+#let multi-select(cols: 1, none-above: none, ..body) = {
+  _multi-select-grid(cols, none-above, ..body)
 }
 
 #let multi-choice(cols, none-above, ..body) = {
