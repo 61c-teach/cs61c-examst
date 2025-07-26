@@ -26,7 +26,7 @@
       ]
     ]
   ]
-  #pagebreak()
+
 ]
 
 #let footer-continues() = context {
@@ -102,6 +102,7 @@
   exam: "Midterm",
   time: "110 minutes",
   print-answers: false,
+  answer-letters: false,
   coverpage: none,
   header: exam-header,
   footer: exam-footer,
@@ -110,7 +111,9 @@
   text-scale: 1,
   body,
 ) = {
+  
   if type(header) == function {
+    
     header = header(class, semester, exam)
   }
 
@@ -131,7 +134,8 @@
   set par(justify: true)
 
   show heading.where(level: 1): it => titled-question(title: it)
-
+  show heading.where(level: 2): it => titled-subquestion(title: it)
+  
   show raw: set text(font: "New Computer Modern Mono", size: 1.25em, weight: 700, top-edge: 5pt)
   
   show raw: it => {
@@ -167,8 +171,10 @@
   }
 
   [
+    #states.show-answer-letters.update(it => answer-letters)
     #body
 
     #metadata("exam-end") <exam-end>
   ]
 }
+

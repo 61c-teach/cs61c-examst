@@ -29,6 +29,10 @@
   Q#question-num.get().at(0).#part-num.get().at(0)
 ]
 
+#let subqnum() = context [
+    Q#question-num.get().at(0).#part-num.get().at(0).#sub-part-num.get().at(0)
+]
+
 #let part(
   points: none,
   noprompt: false,
@@ -56,3 +60,40 @@
     }
   ]
 }
+
+#let subpart(
+  points: none,
+  noprompt: false,
+  body,
+) = {
+  block(height: auto, breakable: false)[
+    #sub-part-num.step()
+    #if points == none { points = 1 }
+
+    #context {
+      if noprompt {
+        stack(dir: ltr, spacing: 0.5em, subqnum(), add-points(points), block(width: 80%, body))
+      } else {
+        grid(
+          columns: (4em, 1fr),
+          align: (right + top, left + top),
+          inset: 2pt,
+          subqnum(),
+          [
+            #add-points(points)
+            #body
+          ],
+        )
+      }
+    }
+  ]
+}
+
+#let subparts(
+  ..body
+) = {
+  for b in body.pos() {
+    b
+  }
+}
+

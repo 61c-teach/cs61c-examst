@@ -51,6 +51,7 @@
     outset: (bottom: outset),
     [
       #if print-answers.get() {
+        // set text(fill: red)
         align(center + bottom, sol)
       }
       #place(bottom + center, dy: 11pt, text(size: 8pt, qnum()))
@@ -101,3 +102,4 @@
     }
   ]
 }
+
