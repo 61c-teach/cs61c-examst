@@ -111,9 +111,9 @@
   text-scale: 1,
   body,
 ) = {
-  
+
   if type(header) == function {
-    
+
     header = header(class, semester, exam)
   }
 
@@ -135,7 +135,7 @@
 
   show heading.where(level: 1): it => titled-question(title: it)
   show heading.where(level: 2): it => titled-subquestion(title: it)
-  
+
   show raw: set text(font: "New Computer Modern Mono", size: 1.25em, weight: 700, top-edge: 5pt)
 
   show raw: it => {
@@ -160,7 +160,6 @@
     }
   }
 
-  states.print-answers.update(it => print-answers)
   if coverpage == none {
     frontpage(class, instructors, semester, exam, time, last-edited)
   } else if type(coverpage) == str {
@@ -177,4 +176,3 @@
     #metadata("exam-end") <exam-end>
   ]
 }
-
