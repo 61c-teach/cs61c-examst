@@ -78,7 +78,7 @@
   grid(
     columns: 3,
     column-gutter: 5pt,
-    align: horizon,
+    align: top,
     [#h(6pt)], selection(), [#body],
   )
 }
@@ -133,7 +133,7 @@
     if type(b) == content { result = choice(_choice, b) }
     (result,)
   }
-  
+
   states.answer-letters.update(1)
   if none-above != none {
     let num-items = body.pos().len()
@@ -165,7 +165,7 @@
       }
     ))
   }
-  
+
   grid(
     columns: cols, column-gutter: 1em, row-gutter: 1em,
     ..lst.slice(0, -1), ..lst.slice(-1)
