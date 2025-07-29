@@ -111,9 +111,9 @@
   text-scale: 1,
   body,
 ) = {
-  
+
   if type(header) == function {
-    
+
     header = header(class, semester, exam)
   }
 
@@ -135,9 +135,9 @@
 
   show heading.where(level: 1): it => titled-question(title: it)
   show heading.where(level: 2): it => titled-subquestion(title: it)
-  
+
   show raw: set text(font: "New Computer Modern Mono", size: 1.25em, weight: 700, top-edge: 5pt)
-  
+
   show raw: it => {
     show "~": set text(font: "Atkinson Hyperlegible Mono", weight: 500)
     show "^": set text(font: "Atkinson Hyperlegible Mono", weight: 500)
@@ -161,14 +161,13 @@
   }
 
   if coverpage == none {
-    states.print-answers.update(it => print-answers)
     frontpage(class, instructors, semester, exam, time, last-edited)
-    states.print-answers.update(it => print-answers)
-  } else if type(coverpage) == string {
+  } else if type(coverpage) == str {
     include coverpage
   } else if type(coverpage) == function {
-    coverpage = coverpage(class, instructors, semester, exam, time, print-answers, header, footer, last-edited)
+    coverpage(class, instructors, semester, exam, time, print-answers, header, footer, last-edited)
   }
+  states.print-answers.update(it => print-answers)
 
   [
     #states.show-answer-letters.update(it => answer-letters)
@@ -177,4 +176,3 @@
     #metadata("exam-end") <exam-end>
   ]
 }
-
