@@ -38,7 +38,7 @@
   Select all true statements about the manager-worker framework.
 
   #multi-select(
-    cols: 1,
+    cols: 2,
     rows: 4,
     none-above: auto,
     correct()[If one program crashes, the others keep going.],
