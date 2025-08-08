@@ -74,7 +74,10 @@
   )
 }
 
-#let choice(selection, body) = {
+#let choice(selection, body, i: none) = {
+  if i != none {
+    states.answer-letters.update(i)
+  }
   grid(
     columns: 3,
     column-gutter: 5pt,
@@ -129,46 +132,60 @@
 #let _multi-select-grid(cols, none-above, ..body) = {
   let lst = for (i, b) in body.pos().enumerate() {
     let result = none
-    if type(b) == dictionary { result = choice(b.selection, b.body) }
-    if type(b) == content { result = choice(_choice, b) }
+    if type(b) == dictionary { result = choice(b.selection, b.body, i:i + 1) }
+    if type(b) == content { result = choice(_choice, b, i: i + 1) }
     (result,)
   }
-  
+
   states.answer-letters.update(1)
+  let num-items = body.pos().len()
+
+  let num-cols = if type(cols) == int {
+    cols
+  } else if type(cols) == array {
+    cols.len()
+  }
+  let num-rows = calc.ceil(num-items / num-cols)
+
+  let num-cells = num-cols * num-rows
+
   if none-above != none {
-    let num-items = body.pos().len()
-    let num-cols = if type(cols) == int {
-      cols
-    } else if type(cols) == array {
-      cols.len()
-    }
     let none-above-span = num-cols - calc.rem(num-items, num-cols)
+    if num-cells == num-items {
+      num-rows += 1
+      num-cells += num-cols
+    }
+    num-items += 1
 
     lst.push(grid.cell(
-      colspan: none-above-span,
+      // colspan: none-above-span,
       {
         show square: it => circle(radius: it.width.length / 2, fill: it.fill, stroke: it.stroke)
         if type(none-above) == bool and none-above{
-          choice(_choice, [None of the above])
+          choice(_choice, [None of the above], i: num-items)
         } else if type(none-above) == type(auto) {
           if body.pos()
                 .filter(it => type(it) == dictionary)
                 .filter(it => it.selection == _correct)
                 .len() == 0 {
-                  choice(_correct, [None of the above])
+                  choice(_correct, [None of the above], i: num-items)
                 } else {
-                  choice(_choice, [None of the above])
+                  choice(_choice, [None of the above], i: num-items)
                 }
         } else if type(none-above) == function {
-          choice(none-above, [None of the above])
+          choice(none-above, [None of the above], i: num-items)
         }
       }
     ))
   }
-  
+
+    let lst = array.zip(
+    ..(lst + (none,) * (num-cells - num-items)).chunks(num-rows)
+  ).flatten()
+
   grid(
     columns: cols, column-gutter: 1em, row-gutter: 1em,
-    ..lst.slice(0, -1), ..lst.slice(-1)
+    ..lst,
   )
 }
 
